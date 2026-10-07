@@ -84,6 +84,7 @@ export function mysticCanFinish(h, missing, wantStems) {
 export function stepsHtml(h, missing, wantStems, heroes) {
   const out = [];
   const cps = h.checkpoints || [];
+  if (h.starting_class && heroes) out.push(`Start on ${heroes.name(heroes.cls)}`);
   const who = h.route_class || [];
   const switched = heroes && who.some((c) => c !== heroes.cls);
   const as = (c) => (switched ? ` <b>as ${heroes.name(c)}</b>` : "");

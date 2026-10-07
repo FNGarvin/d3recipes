@@ -290,8 +290,10 @@ function baseQuery(req, item, season, hc) {
 function startTier() {
   const t = TIERS[run.i];
   const left = Math.max(1000, run.deadline - performance.now());
-  const budget = Math.max(1500, left / (TIERS.length - run.i));
-  const q = { ...run.base, quality: t.quality, end_on_primalize: t.crafted };
+  const remaining = (TIERS.length - run.i) * run.heroes.length - run.heroIndex;
+  const budget = Math.max(100, left / remaining);
+  const hero = run.heroes[run.heroIndex];
+  const q = { ...run.base, class: hero, quality: t.quality, end_on_primalize: t.crafted };
   if (t.crafted && q.max_primalize < 1) { nextTier(); return; }
   searchId += 1;
   worker.postMessage({ type: "search", id: searchId, query: q, budgetMs: budget });
@@ -299,6 +301,9 @@ function startTier() {
 }
 
 function nextTier() {
+  run.heroIndex += 1;
+  if (run.heroIndex < run.heroes.length) { startTier(); return; }
+  run.heroIndex = 0;
   run.i += 1;
   if (run.i >= TIERS.length) { finish(); return; }
   startTier();
@@ -309,7 +314,7 @@ function startRun(req, item, season, hc, secs, onUpdate, onDone, onCancel) {
   if (run && !run.finished) { run.finished = true; worker.postMessage({ type: "cancel" }); if (run.onCancel) run.onCancel(); }
   run = {
     base: baseQuery(req, item, season, hc), deadline: performance.now() + Math.max(1, secs) * 1000,
-    i: 0, results: {}, wantsSnap: req.w.map((w) => w[0]), item, show: req.n,
+    i: 0, heroIndex: 0, heroes: [...new Set([req.c, ...item.classes, ...item.cross])], completed: {}, results: {}, wantsSnap: req.w.map((w) => w[0]), item, show: req.n,
     stopped: false, capped: false, warnings: new Set(), finished: false, onUpdate, onDone, onCancel,
   };
   startTier();
@@ -318,7 +323,13 @@ function startRun(req, item, season, hc, secs, onUpdate, onDone, onCancel) {
 function onResults(r, final) {
   const t = TIERS[run.i];
   r.warnings.forEach((w) => run.warnings.add(w));
-  run.results[t.key] = r;
+  const hero = info.classes[run.heroes[run.heroIndex]];
+  const tagged = { ...r, full: r.full.map(h => ({ ...h, starting_class: hero })), near: r.near.map(h => ({ ...h, starting_class: hero })), notable: r.notable.map(h => ({ ...h, starting_class: hero })) };
+  const prior = run.completed[t.key];
+  const order = (a, b) => a.cost - b.cost || a.steps - b.steps;
+  const merged = prior ? { ...tagged, full: [...prior.full, ...tagged.full].sort(order), near: [...prior.near, ...tagged.near].sort(order), notable: [...prior.notable, ...tagged.notable].sort(order) } : tagged;
+  run.results[t.key] = merged;
+  if (final) run.completed[t.key] = merged;
   if (final && !r.status.done) run.stopped = true;   // ran out of time in this category
   if (final && r.status.capped) run.capped = true;   // the planner's own search limit, not the clock
   run.onUpdate(run, false);
@@ -563,7 +574,7 @@ function resultsHtml(run, final) {
     for (const h of pickHits(t.key, r, snap, run.show)) {
       if (shown.some((s) => s.matched >= h.matched.length && s.cost <= h.cost)) continue;
       shown.push({ matched: h.matched.length, cost: h.cost });
-      body += hitHtml(h, TIER_OF[t.key], snap, run.item, run.base.class);
+      body += hitHtml(h, TIER_OF[t.key], snap, run.item, info.classes.indexOf(h.starting_class));
     }
   }
   if (shown.length) html += `<section class="card">${body}</section>`;
