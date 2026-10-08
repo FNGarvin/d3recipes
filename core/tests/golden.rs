@@ -143,9 +143,11 @@ fn converts() {
     let mut fails = 0;
     let mut n = 0;
     for e in g["convert"].as_array().unwrap() {
-        let cls = u(&e["cls"]) as usize;
-        let mut sim = Sim::new(d.clone(), cls, true);
         let item = d.item_by_id[&(u(&e["item"]) as u32)];
+        // The Python model ignored the hero's class on a class item; the game spends one extra draw when it differs (see
+        // switch.rs played_cross_class_convert), so those vectors are replayed as the item's own class, which is what they computed.
+        let cls = d.items[item].icls.unwrap_or(u(&e["cls"]) as usize);
+        let mut sim = Sim::new(d.clone(), cls, true);
         let g_ = sim.convert(item, u(&e["seed"]) as u32);
         let want: Vec<u64> = e["affixes"].as_array().unwrap().iter().map(u).collect();
         let want_target = u(&e["target"]);

@@ -570,7 +570,9 @@ impl Sim {
     /// Convert Set Item: pool = set-mates minus the source, weighted by w356*cmult[class] (the
     /// SAME field Hope of Cain uses), one MWC step past the Reforge-family start point (x0) picks the target; that
     /// SAME x0 seeds the target's stat generation (drop_item, unmodified) and becomes its own future seed (lo(x0),
-    /// the same pattern Hope of Cain uses for its own drops). Caller must check `set_pool(item_idx).len() > 2`
+    /// the same pattern Hope of Cain uses for its own drops). A hero of another class than a class item's spends one extra
+    /// draw after the pick, as Hope of Cain does (chain_roots), and the item is built from and seeded by the state after it
+    /// (played: a Demon Hunter converting a Crusader's Spaulders of Valor). Caller must check `set_pool(item_idx).len() > 2`
     /// first (the recipe is unavailable on 2-piece sets) -- panics on an empty pool otherwise.
     pub fn convert(&mut self, item_idx: usize, seed: u32) -> Converted {
         let d = self.d.clone();
@@ -590,9 +592,9 @@ impl Sim {
                 break;
             }
         }
-        let x0_lo = x0 as u32;
+        let x0 = if matches!(item.icls, Some(c) if c != self.hero) { step(x0) } else { x0 };
         let affixes = self.drop_item(target, x0, false, false);
-        Converted { target, affixes, child_seed: x0_lo }
+        Converted { target, affixes, child_seed: x0 as u32 }
     }
 
     /// Improve Legendary (primalize_predict.primalize, MODEL B): returns (affixes, child seed).

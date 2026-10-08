@@ -139,3 +139,38 @@ fn max_switch_limits_the_hand_overs() {
     // five allowed: only a dearer route (7,200, five hand-overs) is left
     assert!(run(5).map_or(true, |h| h.0 > 6800));
 }
+
+/// Played (season 40 softcore): Crusader, Hope of Cain #2 on pants (Chausses of Valor), Convert, Reforge by a Demon Hunter, then
+/// Convert by the Demon Hunter. A hero of another class than the set's spends one extra draw after the pick, so the Chausses are
+/// built from the state after it. Without that draw the engine gave Str 454, Justice and Experience; the game gave these lines.
+#[test]
+fn played_cross_class_convert() {
+    use d3cube::sim::{chain_roots, Sim};
+    let d = data();
+    let (cru, dh) = (5usize, 0usize);
+    let legs = d.slots.iter().find(|s| s.name == "Legs").unwrap();
+    let root = chain_roots(&legs.pools[cru], legs.key, 40, false, 2, true, cru, &d.items).into_iter().find(|r| r.n == 2).unwrap();
+    assert_eq!(d.items[root.item].name, "Chausses of Valor");
+    let mut sim = Sim::new(d.clone(), cru, true);
+    let c1 = sim.convert(root.item, root.seed);
+    sim.hero = dh;
+    let r2 = sim.reforge(c1.target, c1.child_seed);
+    let lines = |sim: &Sim, item: usize, seed: u32, aff: &[usize]| -> Vec<(String, f64)> {
+        sim.values(item, seed, aff).iter().filter_map(|l| l.aff.map(|a| (d.affixes[a].stem.clone(), l.value))).collect()
+    };
+    assert_eq!(
+        lines(&sim, c1.target, r2.child_seed, &r2.affixes),
+        [("Str", 461.0), ("ResistAll", 97.0), ("CooldownReduction", 0.05), ("Regen", 5410.0), ("Gold", 0.32), ("GoldPickUpRadius", 2.0)]
+            .map(|(s, v)| (s.to_string(), v))
+    );
+    let c3 = sim.convert(c1.target, r2.child_seed);
+    assert_eq!(d.items[c3.target].name, "Chausses of Valor");
+    assert_eq!(
+        lines(&sim, c3.target, c3.child_seed, &c3.affixes),
+        [("Str", 498.0), ("ResistAll", 94.0), ("Vit", 423.0), ("Gold", 0.32), ("GoldPickUpRadius", 1.0)].map(|(s, v)| (s.to_string(), v))
+    );
+    // the set's own class converts as before: no extra draw
+    sim.hero = cru;
+    let own = sim.convert(c1.target, r2.child_seed);
+    assert_eq!(lines(&sim, own.target, own.child_seed, &own.affixes)[0], ("Str".to_string(), 454.0));
+}
