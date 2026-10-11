@@ -66,9 +66,19 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 
 ## Changelog
 
-**2026-10-10**
+**2026-10-11**
+
+- Fixed the Monk Daibo Balance being named "Inna's Reach" in the item list, which showed two identical Inna's Reach entries. Confirmed in game.
+- Follower tokens (Templar Relic, Enchantress Focus, Scoundrel Token) no longer appear in custom search, where they showed up under hexadecimal names. They roll natural primals like any item, so the cheap primals page now includes them: on Hardcore the Scoundrel Token is the cheapest entry (9 casts, confirmed in game). Thanks to Ainahir for the report (#18).
+- Fixed ordinary 1H flails (Crusader) and 1H scythes (Necromancer) offering ethereal-weapon powers (Khalim, Soul Harvester and the ethereals' passives), which a plain Swiftmount could be asked to roll four times over. Ethereals don't come out of the Cube.
+- The prepared lists now search Damage Range, bonus Armor and Area Damage, which they had been skipping, so some costs went up (the Focus and Restraint rings, for example).
+
+<details>
+<summary><b>2026-10-10</b></summary>
 
 - Fixed the prepared lists (staples, cheap primals, the builds) showing Softcore recipes under a Hardcore header when you opened the site with Hardcore saved from an earlier visit; choosing the mode by hand, or reloading in some browsers, hid it. They now load the saved mode straight away. Thanks to RoyalPain1980 for reporting it and helping to track it down.
+
+</details>
 
 <details>
 <summary><b>2026-10-08</b></summary>
