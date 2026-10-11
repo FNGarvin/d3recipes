@@ -66,7 +66,12 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 
 ## Changelog
 
-**2026-10-08**
+**2026-10-10**
+
+- Fixed the prepared lists (staples, cheap primals, the builds) showing Softcore recipes under a Hardcore header when you opened the site with Hardcore saved from an earlier visit; choosing the mode by hand, or reloading in some browsers, hid it. They now load the saved mode straight away. Thanks to RoyalPain1980 for reporting it and helping to track it down.
+
+<details>
+<summary><b>2026-10-08</b></summary>
 
 - The sidebar entries are real links now, so they open in a new tab (middle-click, or right-click and Open Link in New Tab). A plain click works as before. Suggested by Rwede.
 - **Edit builds** and **Search build items**: save a build in your browser (items and the stats you want per slot), then search every slot at once with the same costs and limits as custom search, skipping the items you already have. Builds import from and export to the same TOML as `builds.toml`, so a build made here can be submitted as is. Each slot gets the same recipe cards as custom search. Contributed by Ainahir (#6).
@@ -77,6 +82,8 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 - Thanks to Ainahir for all of it, and for the care that went into it: every rule above came with in-game tests on a whole sequence of results, the cross-class Improve Legendary bug was found and pinned down along the way, and details like the crucible's own material icon were not forgotten (#7).
 - Hovering over **Most Sanctifications** now explains it: 0 turns Sanctification off whatever its cost, and an empty box means no limit. Thanks to Ainahir (#15).
 - Fixed weapons' on-hit crowd-control chances (Fear, Stun, Chill, Slow and so on) showing internal names such as "Weapon Hit Fear1h" in the stat list, and their values as 0: they now read "Chance to Fear on Hit" and show as percentages, like the same chances on other items. Damage against Beasts and against Undead (Monster Hunter, Corrupted Ashbringer) and Halcyon's Ascent's power ("Mesmerize on Archon" for a Wizard, and so on) got proper names too. Thanks to Ainahir (#14).
+
+</details>
 
 <details>
 <summary><b>2026-10-07</b></summary>
