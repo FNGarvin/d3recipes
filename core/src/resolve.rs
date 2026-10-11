@@ -192,7 +192,7 @@ fn stats_display(stem: &str) -> Option<&'static str> {
         "LightningResist" => "Lightning Resistance", "MF" => "Magic Find", "ManaRegen" => "Mana Regeneration",
         "MaxArcanePower" => "Maximum Arcane Power", "MaxDiscipline" => "Maximum Discipline", "MaxEssence" => "Maximum Essence",
         "MaxFury" => "Maximum Fury", "MaxMana" => "Maximum Mana", "MaxSpirit" => "Maximum Spirit", "MaxWrath" => "Maximum Wrath",
-        "MinMaxDam" => "Damage (weapon)", "PhysicalResist" => "Physical Resistance", "PoisonD" => "Poison Damage (weapon)",
+        "MinMaxDam" => "Damage Range", "PhysicalResist" => "Physical Resistance", "PoisonD" => "Poison Damage (weapon)",
         "PoisonResist" => "Poison Resistance", "REQ" => "Level Requirement Reduction", "Regen" => "Life Regeneration",
         "ResistAll" => "All Resistance", "ResistFreeze" => "Freeze Duration Reduction", "ResistRoot" => "Immobilize Duration Reduction",
         "ResistStun" => "Stun Duration Reduction", "ResistStunRootFreeze" => "Stun/Immobilize/Freeze Duration Reduction",
@@ -259,13 +259,14 @@ fn match_stat(freetext: &str, candidate_stems: &HashSet<String>) -> (Option<Stri
     if text.contains("ramaladni") {
         return (None, Some("Ramaladni's Gift adds a socket via crafting, not a roll -- never a search target".to_string()));
     }
-    if text == "armor" || text == "damage range" {
-        return (None, Some(format!("not modelled by this project (HANDOFF sec 6): {text}")));
-    }
     if let Some(alias) = match text.as_str() {
         "life %" => Some("Life"),
         "elite damage" => Some("DamageVsElite"),
         "elite damage reduction" => Some("DamReductionVsElite"),
+        // the page's names for the ring/amulet damage range (MinMaxDam) and bonus Armor (DR); a weapon rolls neither as an affix, so
+        // a weapon's "Damage Range" stays unresolved ("aliased ..., but not rollable on this item"), as DECISIONS says
+        "damage range" => Some("MinMaxDam"),
+        "armor" => Some("DR"),
         _ => None,
     } {
         return if candidate_stems.contains(alias) {
