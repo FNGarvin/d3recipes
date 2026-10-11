@@ -231,6 +231,14 @@ function fromHash() {
   if (!["search", "create-build", "search-builds", "staples", "salvage", "saved"].includes(route) && current && !current.builds.some((b) => b.id === route)) route = "search";
 }
 
+// The saved mode lives in localStorage and app.js restores it only after the search engine has loaded, which is after the first
+// refresh() below has already picked a file. Restore it here first, so a cold start with Hardcore saved loads premade_hc.json.
+function restoreMode() {
+  let saved = null;
+  try { saved = localStorage.getItem("d3r-hc"); } catch (e) { /* storage blocked: keep the page's own value */ }
+  if (saved === "0" || saved === "1") $("hc").value = saved;
+}
+
 async function refresh() {
   try {
     current = await load(modeKey());
@@ -274,6 +282,7 @@ window.addEventListener("popstate", () => { fromHash(); show(); });
 $("hc").addEventListener("change", refresh);
 $("season").addEventListener("input", show);
 // nav is empty until the data arrives; the search view alone must work if the fetch fails, so show it at once.
+restoreMode();
 fromHash();
 $("viewSearch").hidden = route !== "search";
 $("viewCreateBuild").hidden = route !== "create-build";
