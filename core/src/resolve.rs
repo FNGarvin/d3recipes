@@ -310,6 +310,11 @@ fn match_stat(freetext: &str, candidate_stems: &HashSet<String>) -> (Option<Stri
         return (None, Some(format!("no rollable stat on this item matched {freetext:?}")));
     }
     if hits.len() > 1 {
+        // several stats contain the words ("Area Damage" is inside "Damage" and is SplashDamage's own name): the one named exactly so wins
+        let exact: Vec<&String> = hits.iter().copied().filter(|stem| stat_name(stem).to_lowercase() == text).collect();
+        if exact.len() == 1 {
+            return (Some(exact[0].clone()), None);
+        }
         hits.sort();
         return (None, Some(format!("ambiguous: {freetext:?} matched {hits:?}")));
     }
