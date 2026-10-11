@@ -7,6 +7,12 @@ name: No wasm in pull requests
 on:
   pull_request_target:
     types: [opened, synchronize, reopened]
+  # run by hand against any pull request, open or closed, to see what the check would say
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: Pull request number
+        required: true
 
 permissions:
   contents: read
@@ -23,7 +29,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           REPO: ${{ github.repository }}
-          PR: ${{ github.event.pull_request.number }}
+          PR: ${{ github.event.pull_request.number || inputs.pr }}
         run: |
           files=$(gh api "repos/$REPO/pulls/$PR/files" --paginate --jq '.[] | .filename, (.previous_filename // empty)')
           bad=$(printf '%s\n' "$files" | grep -E '^web/pkg/|\.wasm$' || true)
