@@ -1,9 +1,9 @@
-import { KEY, readBuilds as saved, updateBuilds, importPlan, conflictSnapshot, applyImport } from './build-storage.js?v=38afce7115';
-import { combo, esc } from './ui.js?v=38afce7115';
-import { parseBuildToml } from './build-toml.js?v=38afce7115';
+import { KEY, readBuilds as saved, updateBuilds, importPlan, conflictSnapshot, applyImport } from './build-storage.js?v=440ee39fb2';
+import { combo, esc } from './ui.js?v=440ee39fb2';
+import { parseBuildToml } from './build-toml.js?v=440ee39fb2';
 // randomUUID exists only on HTTPS and localhost pages; a self-hosted plain-HTTP page needs the fallback
 const uid=()=>globalThis.crypto?.randomUUID?.()??'b-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
-import { CLASS_NAMES, STATS, statName, statNameEnglish, HIDDEN, SLOT_NAMES, itemName } from './stats.js?v=38afce7115';
+import { CLASS_NAMES, STATS, statName, statNameEnglish, legacyStatNames, HIDDEN, SLOT_NAMES, itemName } from './stats.js?v=440ee39fb2';
 const $=id=>document.getElementById('build-'+id);
 const _t=(key,params)=>typeof window!=='undefined'&&typeof window.t==='function'?window.t(key,params):key;
 const slots=['Head','Shoulders','Chest','Hands','Wrists','Waist','Legs','Feet','Amulet','Ring 1','Ring 2','Main-hand','Off-hand','Dual-Wield'];
@@ -111,7 +111,7 @@ async function prepareImported(source){
       const item=info.items.find(it=>it.id===row.item);
       if(item&&!item.classes.includes(hero))throw Error(_t('itemUnavailableToClass',{i:item.name,c:info.classes[hero]}));
       const key=uid();const stems=item?await new Promise((resolve,reject)=>{if(workerFailure){reject(Error(workerFailure));return;}pending.set(key,{resolve,reject});try{worker.postMessage({type:'stems',key,class:hero,slot:item.slot,item:item.id});}catch(e){failRequests(e.message,key);}}):{};
-      for(const name of row.source.stat_priority||[]){const alias=/^sockets?\b/i.test(name)?'Sockets':({armor:'DR',life:'Life',elitedamage:'DamageVsElite',elitedamagereduction:'DamReductionVsElite'})[normalize(name.replace(/\s*\(Secondary\)/i,''))];const cleanName=name.replace(/\s*\(Secondary\)/i,'').replace(/Death Nova/i,'Blood Nova').replace(/^Cooldown$/i,'Cooldown Reduction');const stem=Object.keys(stems).find(s=>(alias?s===alias:(normalize(statNameEnglish(s))===normalize(cleanName)||normalize(statName(s))===normalize(cleanName))||normalize(s)===normalize(cleanName)));const canonicalStem=stem||alias||Object.keys(STATS).find(s=>(normalize(statNameEnglish(s))===normalize(cleanName)||normalize(statName(s))===normalize(cleanName))||normalize(s)===normalize(cleanName));const keyStem=canonicalStem||cleanName;if(!row.wants.some(w=>w.stem===keyStem))row.wants.push({stem:keyStem,min:null,imported:true,exportName:canonicalStem?statNameEnglish(canonicalStem):cleanName,label:canonicalStem?null:cleanName});}
+      for(const name of row.source.stat_priority||[]){const alias=/^sockets?\b/i.test(name)?'Sockets':({armor:'DR',life:'Life',elitedamage:'DamageVsElite',elitedamagereduction:'DamReductionVsElite'})[normalize(name.replace(/\s*\(Secondary\)/i,''))];const cleanName=name.replace(/\s*\(Secondary\)/i,'').replace(/Death Nova/i,'Blood Nova').replace(/^Cooldown$/i,'Cooldown Reduction');const stem=Object.keys(stems).find(s=>(alias?s===alias:(normalize(statNameEnglish(s))===normalize(cleanName)||normalize(statName(s))===normalize(cleanName)||legacyStatNames(s).some(n=>normalize(n)===normalize(cleanName)))||normalize(s)===normalize(cleanName)));const canonicalStem=stem||alias||Object.keys(STATS).find(s=>(normalize(statNameEnglish(s))===normalize(cleanName)||normalize(statName(s))===normalize(cleanName)||legacyStatNames(s).some(n=>normalize(n)===normalize(cleanName)))||normalize(s)===normalize(cleanName));const keyStem=canonicalStem||cleanName;if(!row.wants.some(w=>w.stem===keyStem))row.wants.push({stem:keyStem,min:null,imported:true,exportName:canonicalStem?statNameEnglish(canonicalStem):cleanName,label:canonicalStem?null:cleanName});}
       delete row.source;
     }
     return {build:{name:build.name,class:hero,slots:rows},skipped};

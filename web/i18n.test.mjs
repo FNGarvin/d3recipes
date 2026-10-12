@@ -99,3 +99,13 @@ test('every item the engine knows has a Chinese name',async()=>{
   const missing=[...new Set(JSON.parse(engine.describe()).items.map(i=>i.name))].filter(n=>!(n in zh));
   assert.deepEqual(missing,[],'items with no Chinese name');
 });
+test('English skill names read as the game spells them, and builds exported with the old names still import',async()=>{
+  const {statNameEnglish,legacyStatNames}=await import('./stats.js');
+  const want={Skill_Barbarian_HotA:'Hammer of the Ancients damage',Skill_Wizard_RayofFrost:'Ray of Frost damage',Skill_Monk_WaveofLight:'Wave of Light damage',
+    Skill_WitchDoctor_WallofZombies:'Wall of Zombies damage',Skill_Wizard_WaveOfForce:'Wave of Force damage',Skill_Barbarian_CallOfTheAncients:'Call of the Ancients damage',
+    Skill_Crusader_FistOfTheHeavens:'Fist of the Heavens damage',Skill_Monk_Wayof100Fists:'Way of the Hundred Fists damage',Skill_Crusader_HeavensFury3:"Heaven's Fury damage",
+    Skill_Monk_SevenSidedStrike:'Seven-Sided Strike damage',Skill_WitchDoctor_FireBomb:'Firebomb damage',Skill_Wizard_SpectralBlade:'Spectral Blade damage'};
+  for(const [stem,name] of Object.entries(want))assert.equal(statNameEnglish(stem),name,stem);
+  assert.deepEqual(legacyStatNames('Skill_Barbarian_HotA'),['Hot A damage']);
+  assert.deepEqual(legacyStatNames('Dex'),[]);
+});
