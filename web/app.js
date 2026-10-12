@@ -1,10 +1,10 @@
-import {baseQuery,pickHits} from "./search-settings.js?v=a72ea4a566";
+import {baseQuery,pickHits} from "./search-settings.js?v=4144d597d9";
 // Copyright 2026 FNG. Use, modification and redistribution are permitted under the conditions in LICENSE:
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
-import { statName, statAbbr, isSecondary, RANGE_STEMS, WEAPON_SLOTS, fmtValue, isPct, HIDDEN, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=a72ea4a566";
-import { slotPlural, matsHtml, stepsHtml, mysticCanFinish, tooltipRows, requestHash, parseRequestHash, savedList, savedHas, savedToggle, savedRemove, DEFAULT_CONVERTS, supportsSanctify, defaultSanctifyCap, DEFAULT_SANCTIFY_PRICE } from "./recipe.js?v=a72ea4a566";
+import { statName, statAbbr, isSecondary, RANGE_STEMS, WEAPON_SLOTS, fmtValue, isPct, HIDDEN, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=4144d597d9";
+import { slotPlural, matsHtml, stepsHtml, mysticCanFinish, tooltipRows, requestHash, parseRequestHash, savedList, savedHas, savedToggle, savedRemove, DEFAULT_CONVERTS, supportsSanctify, defaultSanctifyCap, DEFAULT_SANCTIFY_PRICE } from "./recipe.js?v=4144d597d9";
 
-import { combo, hitHtml, readSettings, searchStarted, searchEnded } from "./ui.js?v=a72ea4a566";
+import { combo, hitHtml, readSettings, searchStarted, searchEnded } from "./ui.js?v=4144d597d9";
 
 const $ = (id) => document.getElementById(id);
 // Forward the cache-busting version index.html stamped onto our own src= down to the worker, which forwards it
@@ -104,12 +104,19 @@ function updateSanctifyControls() {
   $("sanctifyWarning").hidden = supportsSanctify(season) || ($("sn").value.trim() !== "" && +$("sn").value <= 0);
 }
 
+function renderClassOptions() {
+  const prev = $("cls").value;
+  $("cls").innerHTML = info.classes.map((c, i) => [i, className(c)]).sort((x, y) => x[1].localeCompare(y[1])).map(([i, n]) => `<option value="${i}">${esc(n)}</option>`).join("");
+  if (prev && [...$("cls").options].some((o) => o.value === prev)) $("cls").value = prev;
+}
+
 function start() {
   initTheme();
   initContext();
   $("loading").hidden = true;
   $("app").hidden = false;
-  $("cls").innerHTML = info.classes.map((c, i) => [i, className(c)]).sort((x, y) => x[1].localeCompare(y[1])).map(([i, n]) => `<option value="${i}">${esc(n)}</option>`).join("");
+  renderClassOptions();
+  window.addEventListener("d3-lang-change", () => { renderClassOptions(); syncContext(); });
   $("cls").addEventListener("change", loadStems);
   itemList = info.items;
   combo($("itemFind"), $("itemPick"), itemSource, window.t('noMatchingItem'), pickItem);
