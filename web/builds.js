@@ -2,9 +2,9 @@
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
 // Prepared builds: the side/top navigation and the per-build recipe pages. Reads premade_sc.json / premade_hc.json
 // (see export_premade.py); needs no wasm, so it is usable before the search engine has finished loading.
-import { statName, statAbbr, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=bda6efa679";
-import { stepsHtml, matsHtml, tooltipRows, savedList, requestHash } from "./recipe.js?v=bda6efa679";
-import { esc } from "./ui.js?v=bda6efa679";
+import { statName, statAbbr, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=012891f6a8";
+import { stepsHtml, matsHtml, tooltipRows, savedList, requestHash } from "./recipe.js?v=012891f6a8";
+import { esc } from "./ui.js?v=012891f6a8";
 
 const $ = (id) => document.getElementById(id);
 const V = new URL(import.meta.url).searchParams.get("v");

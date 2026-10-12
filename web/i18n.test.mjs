@@ -58,3 +58,9 @@ test('saved builds and exports carry the game\'s English stat names, whatever la
   assert.equal(statName(stem),english);
   delete globalThis.window;
 });
+test('every material a recipe can show has a Chinese name',async()=>{
+  const {zh}=load({saved:'zh'}).translations;
+  const {MATERIAL_ICONS,RECIPES}=await import('./stats.js');
+  const used=new Set(Object.values(RECIPES).flatMap(r=>Object.keys(r)));
+  for(const name of new Set([...used,...Object.keys(MATERIAL_ICONS)]))assert.ok(zh[name],'Chinese name for '+name);
+});
