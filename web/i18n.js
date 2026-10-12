@@ -5,6 +5,17 @@ const translations = {
     ctxChange: "change",
     resultsFor: "Results for",
     mysticPlus: "+ Mystic",
+    footerZhBy: "Chinese localization by",
+    footerAiNote: "Chinese text translated by AI.",
+    seasonLabel: "Season {s}",
+    footerPeriod: ".",
+    footerLetUsKnow: "Let us know on GitHub",
+    importFailedList: " Failed: {f}.",
+    importSkipped: "{n}: skipped {s}",
+    potionSlot: "Potion slot",
+    invalidSavedBuildData: "Invalid saved build data",
+    unknownItemShort: "Unknown item",
+    orJoin: " or ",
     backToStart: "Back to the start",
     switchThemeAria: "Switch light or dark theme",
     navAria: "Prepared builds and custom search",
@@ -274,6 +285,17 @@ const translations = {
     ctxChange: "更改",
     resultsFor: "以下结果适用于",
     mysticPlus: "+ 秘士",
+    footerZhBy: "中文本地化：",
+    footerAiNote: "中文文本由 AI 翻译。",
+    seasonLabel: "第 {s} 赛季",
+    footerPeriod: "。",
+    footerLetUsKnow: "欢迎到 GitHub 告诉我们",
+    importFailedList: " 失败：{f}。",
+    importSkipped: "{n}：已跳过 {s}",
+    potionSlot: "药水槽位",
+    invalidSavedBuildData: "已保存的构筑数据无效",
+    unknownItemShort: "未知物品",
+    orJoin: " 或 ",
     backToStart: "回到开头",
     switchThemeAria: "切换明/暗模式",
     navAria: "预设构筑与自定义搜索",
@@ -692,6 +714,16 @@ const translations = {
     "Ahavarion Spear of Lycander": "阿哈瓦里昂·利坎德尔之矛",
     "Akanesh the Herald of Righteousness": "正义的传令者阿卡内什",
     "Akarat's Awakening": "阿卡拉特的觉醒",
+    "Head": "头盔",
+    "Hands": "手套",
+    "Wrists": "护腕",
+    "Waist": "腰带",
+    "Feet": "鞋子",
+    "Ring 1": "戒指 1",
+    "Ring 2": "戒指 2",
+    "Main-hand": "主手",
+    "Off-hand": "副手",
+    "Dual-Wield": "双持",
     "Death's Breath": "死亡之息",
     "Reusable Parts": "万用材料",
     "Arcane Dust": "奥术之尘",
@@ -1523,7 +1555,7 @@ function t(key, params) {
   let str = dict[key] || translations.en[key] || key;
   if (params) {
     Object.keys(params).forEach((k) => {
-      str = str.replace(new RegExp(`\\{${k}\\}`, "g"), params[k]);
+      str = str.replace(new RegExp(`\\{${k}\\}`, "g"), () => String(params[k]));
     });
   }
   return str;

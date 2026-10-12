@@ -128,7 +128,11 @@ const ABBR = {
   DexInt: "Dex+Int", DexVit: "Dex+Vit", IntVit: "Int+Vit", StrDex: "Str+Dex", StrInt: "Str+Int", StrVit: "Str+Vit", Sockets: "Socket",
   Thorns: "Thorns", Gold: "Gold Find", MF: "Magic Find",
 };
-export const statAbbr = (stem) => ABBR[stem] || ABBR[alias(stem)] || statName(stem);
+export const statAbbr = (stem) => {
+  const key = "stat_" + stem;
+  if (typeof window !== "undefined" && window.t && window.t(key) !== key) return window.t(key);
+  return ABBR[stem] || ABBR[alias(stem)] || statNameEnglish(stem);
+};
 
 // Secondary (blue-tooltip) affixes: only shown in a result's headline when the player asked for one.
 const SECONDARY = new Set([

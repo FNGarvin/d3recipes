@@ -1,13 +1,15 @@
 // Copyright 2026 FNG. Use, modification and redistribution are permitted under the conditions in LICENSE:
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
 // Recipe rendering shared by the custom search (app.js) and the prepared builds (builds.js).
-import { statName, statAbbr, isSecondary, RANGE_STEMS, fmtValue, materials, MATERIAL_ICONS, MATERIAL_GROUPS, SLOT_NAMES, itemName } from "./stats.js?v=fe16fa1959";
+import { statName, statAbbr, isSecondary, RANGE_STEMS, fmtValue, materials, MATERIAL_ICONS, MATERIAL_GROUPS, SLOT_NAMES, itemName } from "./stats.js?v=b7e1b19fa0";
 
 const slotName = (s) => { const t = typeof window !== "undefined" && window.t ? window.t(s) : s; return t !== s ? t : (SLOT_NAMES[s] || s); };
 
 const PLURAL_FIX = { "Chest Armor": "chest armor pieces", Pants: "pants", Boots: "boots", Gloves: "gloves", Bracers: "bracers", Shoulders: "shoulders", Source: "sources" };
 export function slotPlural(slot, n) {
   const s = slotName(slot);
+  // another language has its own names and plurals: use the translated name as it is
+  if (typeof window !== "undefined" && window.t && window.t(slot) !== slot) return s;
   if (n === 1) {
     const one = s.replace(/^(.*) \((\dH)\)$/, "$2 $1");
     return one.toLowerCase().replace(/^(\dh)/, (m) => m.toUpperCase());
@@ -61,7 +63,8 @@ export function stopOn(cp, prev) {
   const lines = cp.lines.filter((l) => l.stem !== "item power" && l.stem !== "Sockets" && l.stem !== "Indestructible");
   const main = lines.find((l) => MAIN.has(l.stem)) || lines[0];
   const val = main ? `${fmtValue(main.stem, main.value)} ${statAbbr(main.stem)}` : "";
-  const prefix = !prev || cp.name !== prev.name ? cp.name : (cp.quality === "ancient" || cp.quality === "primal") ? cp.quality : "";
+  const quality = cp.quality === "ancient" ? window.t("qualityAncient").toLowerCase() : cp.quality === "primal" ? window.t("qualityPrimal").toLowerCase() : "";
+  const prefix = !prev || cp.name !== prev.name ? itemName(cp.name) : quality;
   const w = typeof window !== "undefined" && window.t ? window.t("withShort") : "w/";
   return prefix && val ? `${prefix} ${w} ${val}` : (prefix || val);
 }

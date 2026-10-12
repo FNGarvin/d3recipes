@@ -64,3 +64,16 @@ test('every material a recipe can show has a Chinese name',async()=>{
   const used=new Set(Object.values(RECIPES).flatMap(r=>Object.keys(r)));
   for(const name of new Set([...used,...Object.keys(MATERIAL_ICONS)]))assert.ok(zh[name],'Chinese name for '+name);
 });
+test('page code has no English message that the table already translates',async()=>{
+  const {translations:{en}}=load();
+  const files=['app','builds','create-build','search-builds','search-settings','ui','recipe','stats'];
+  const code=(await Promise.all(files.map(f=>readFile(new URL(`./${f}.js`,import.meta.url),'utf8')))).join('\n')
+    .replace(/\/\*[\s\S]*?\*\//g,'').replace(/(^|[^:'"\w])\/\/[^\n]*/g,'$1')
+    .replace(/const _fb=[^\n]*/,''); // the English fallback used only when the translation function is missing
+  const found=[];
+  for(const [key,text] of Object.entries(en)){
+    for(const chunk of text.split(/\{\w+\}/).map(c=>c.trim()).filter(c=>c.length>=14&&c.includes(' ')))
+      if(code.includes(chunk)){found.push(key+': '+chunk);break;}
+  }
+  assert.deepEqual(found,[],'use _t / window.t for these');
+});

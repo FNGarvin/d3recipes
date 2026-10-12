@@ -1,10 +1,10 @@
-import {baseQuery,pickHits} from "./search-settings.js?v=fe16fa1959";
+import {baseQuery,pickHits} from "./search-settings.js?v=b7e1b19fa0";
 // Copyright 2026 FNG. Use, modification and redistribution are permitted under the conditions in LICENSE:
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
-import { statName, statAbbr, isSecondary, RANGE_STEMS, WEAPON_SLOTS, fmtValue, isPct, HIDDEN, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=fe16fa1959";
-import { slotPlural, matsHtml, stepsHtml, mysticCanFinish, tooltipRows, requestHash, parseRequestHash, savedList, savedHas, savedToggle, savedRemove, DEFAULT_CONVERTS, supportsSanctify, defaultSanctifyCap, DEFAULT_SANCTIFY_PRICE } from "./recipe.js?v=fe16fa1959";
+import { statName, statAbbr, isSecondary, RANGE_STEMS, WEAPON_SLOTS, fmtValue, isPct, HIDDEN, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=b7e1b19fa0";
+import { slotPlural, matsHtml, stepsHtml, mysticCanFinish, tooltipRows, requestHash, parseRequestHash, savedList, savedHas, savedToggle, savedRemove, DEFAULT_CONVERTS, supportsSanctify, defaultSanctifyCap, DEFAULT_SANCTIFY_PRICE } from "./recipe.js?v=b7e1b19fa0";
 
-import { combo, hitHtml, readSettings, searchStarted, searchEnded } from "./ui.js?v=fe16fa1959";
+import { combo, hitHtml, readSettings, searchStarted, searchEnded } from "./ui.js?v=b7e1b19fa0";
 
 const $ = (id) => document.getElementById(id);
 // Forward the cache-busting version index.html stamped onto our own src= down to the worker, which forwards it
@@ -417,7 +417,7 @@ function renderSaved() {
     return;
   }
   const { season, hc } = contextNow();
-  host.innerHTML = `<div class="bhead"><h2>${window.t('savedTitle')}</h2><span class="small">Season ${season} &middot; ${hc ? window.t('hardcore') : window.t('softcore')}</span></div>
+  host.innerHTML = `<div class="bhead"><h2>${window.t('savedTitle')}</h2><span class="small">${window.t('seasonLabel', { s: season })} &middot; ${hc ? window.t('hardcore') : window.t('softcore')}</span></div>
     <div class="actions"><button type="button" class="btn" id="recompute">${window.t('recompute')}</button><span id="savedStatus" class="small"></span></div>` +
     list.map((e) => `<section class="card saved" data-id="${esc(e.id)}"><div class="shead"><h3>${esc(e.label)}</h3>
       <span><a href="${esc(requestHash(e.req, season, hc))}">${window.t('openInSearch')}</a> <button type="button" class="link" data-rm>${window.t('remove')}</button></span></div>
