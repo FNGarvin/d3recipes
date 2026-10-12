@@ -2,6 +2,7 @@ import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
+import {initSync,Engine} from './pkg/d3cube.js';
 // The page's language table (i18n.js): both languages stay in step, the first language comes from the saved choice and then
 // the browser, and item names follow the language in use.
 const source=await readFile(new URL('./i18n.js',import.meta.url),'utf8');
@@ -76,4 +77,25 @@ test('page code has no English message that the table already translates',async(
       if(code.includes(chunk)){found.push(key+': '+chunk);break;}
   }
   assert.deepEqual(found,[],'use _t / window.t for these');
+});
+test('every stat the engine can offer on an item has a Chinese name',async()=>{
+  const {zh}=load({saved:'zh'}).translations;
+  const {HIDDEN}=await import('./stats.js');
+  initSync({module:await readFile(new URL('./pkg/d3cube_bg.wasm',import.meta.url))});
+  const engine=new Engine(await readFile(new URL('./data.json',import.meta.url),'utf8'));
+  const stems=new Set();
+  for(const it of JSON.parse(engine.describe()).items)for(const c of it.classes||[]){
+    const r=JSON.parse(engine.stems(c,it.slot,it.id));
+    for(const x of Array.isArray(r)?r:Object.keys(r))stems.add(typeof x==='string'?x:(x.stem||x[0]));
+  }
+  const alias=s=>{const m=/^Weapon ?Hit ?([A-Za-z]+?)[12]h$/.exec(s);return m?'Hit'+m[1]:s;};
+  const missing=[...stems].filter(s=>!HIDDEN.test(s)&&!(('stat_'+s) in zh)&&!(('stat_'+alias(s)) in zh));
+  assert.deepEqual(missing,[],'stats with no Chinese name');
+});
+test('every item the engine knows has a Chinese name',async()=>{
+  const {zh}=load({saved:'zh'}).translations;
+  initSync({module:await readFile(new URL('./pkg/d3cube_bg.wasm',import.meta.url))});
+  const engine=new Engine(await readFile(new URL('./data.json',import.meta.url),'utf8'));
+  const missing=[...new Set(JSON.parse(engine.describe()).items.map(i=>i.name))].filter(n=>!(n in zh));
+  assert.deepEqual(missing,[],'items with no Chinese name');
 });

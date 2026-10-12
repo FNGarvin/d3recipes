@@ -48,8 +48,9 @@ const alias = (stem) => {
 };
 
 export function statName(stem) {
-  const i18nKey = "stat_" + stem;
-  if (typeof window !== "undefined" && window.t && window.t(i18nKey) !== i18nKey) return window.t(i18nKey);
+  if (typeof window !== "undefined" && window.t) {
+    for (const key of ["stat_" + stem, "stat_" + alias(stem)]) if (window.t(key) !== key) return window.t(key);
+  }
   return statNameEnglish(stem);
 }
 // The game's English name: what saved builds and exported TOML carry, whatever language the page shows.
@@ -129,8 +130,9 @@ const ABBR = {
   Thorns: "Thorns", Gold: "Gold Find", MF: "Magic Find",
 };
 export const statAbbr = (stem) => {
-  const key = "stat_" + stem;
-  if (typeof window !== "undefined" && window.t && window.t(key) !== key) return window.t(key);
+  if (typeof window !== "undefined" && window.t) {
+    for (const key of ["stat_" + stem, "stat_" + alias(stem)]) if (window.t(key) !== key) return window.t(key);
+  }
   return ABBR[stem] || ABBR[alias(stem)] || statNameEnglish(stem);
 };
 
