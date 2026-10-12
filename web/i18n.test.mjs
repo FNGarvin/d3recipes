@@ -1,0 +1,60 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import vm from 'node:vm';
+// The page's language table (i18n.js): both languages stay in step, the first language comes from the saved choice and then
+// the browser, and item names follow the language in use.
+const source=await readFile(new URL('./i18n.js',import.meta.url),'utf8');
+function load({saved=null,languages=['en-US'],storageThrows=false}={}){
+  const window={};
+  const context=vm.createContext({
+    window,
+    document:{addEventListener(){},querySelectorAll:()=>[],getElementById:()=>null},
+    localStorage:{getItem(){if(storageThrows)throw new Error('blocked');return saved;},setItem(){if(storageThrows)throw new Error('blocked');}},
+    navigator:{languages,language:languages[0]},
+    CustomEvent:function(){}});
+  const translations=vm.runInContext(source+';translations',context);
+  return {window,translations};
+}
+test('every English string has a Chinese one, so the Chinese page never falls back to English for the page text',()=>{
+  const {translations:{en,zh}}=load();
+  assert.deepEqual(Object.keys(en).filter(k=>!(k in zh)),[]);
+});
+test('a Chinese-only key is a name (item, class, slot, stat), not page text the English page would show as a bare key',()=>{
+  const {translations:{en,zh}}=load();
+  const pageText=Object.keys(zh).filter(k=>!(k in en)&&/^[a-z][A-Za-z0-9]*$/.test(k));
+  assert.deepEqual(pageText,[]);
+});
+test('the first language: a saved choice wins, then the browser language, then English',()=>{
+  assert.equal(load({saved:'en',languages:['zh-CN']}).window.t('tagline'),load().translations.en.tagline);
+  assert.equal(load({saved:'zh',languages:['en-US']}).window.t('tagline'),load().translations.zh.tagline);
+  assert.equal(load({languages:['zh-TW','en']}).window.t('tagline'),load().translations.zh.tagline);
+  assert.equal(load({languages:['de-DE']}).window.t('tagline'),load().translations.en.tagline);
+  assert.equal(load({saved:'fr',languages:['de-DE']}).window.t('tagline'),load().translations.en.tagline);
+});
+test('blocked browser storage does not stop the page',()=>{
+  assert.equal(load({storageThrows:true,languages:['en-US']}).window.t('tagline'),load().translations.en.tagline);
+});
+test('item names follow the page language',async()=>{
+  const en=load({saved:'en'}),zh=load({saved:'zh'});
+  const name=Object.keys(zh.translations.zh).find(k=>/^[A-Z][a-z]+( [A-Z][a-z']+)+$/.test(k)&&!(k in zh.translations.en));
+  assert.ok(name,'a translated item name to try');
+  const {itemName}=await import('./stats.js');
+  globalThis.window=en.window;
+  assert.equal(itemName(name),name);
+  globalThis.window=zh.window;
+  assert.equal(itemName(name),zh.translations.zh[name]);
+  delete globalThis.window;
+});
+test('saved builds and exports carry the game\'s English stat names, whatever language the page shows',async()=>{
+  const zh=load({saved:'zh'});
+  const stem=Object.keys(zh.translations.zh).find(k=>k.startsWith('stat_')&&zh.translations.zh[k]!==k).slice(5);
+  const {statName,statNameEnglish}=await import('./stats.js');
+  globalThis.window=zh.window;
+  assert.equal(statName(stem),zh.translations.zh['stat_'+stem]);
+  const english=statNameEnglish(stem);
+  assert.ok(english&&!/[一-鿿]/.test(english),'English name for '+stem);
+  globalThis.window=load({saved:'en'}).window;
+  assert.equal(statName(stem),english);
+  delete globalThis.window;
+});

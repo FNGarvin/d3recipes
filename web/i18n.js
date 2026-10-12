@@ -1481,7 +1481,16 @@ const translations = {
   }
 };
 
-let currentLang = localStorage.getItem("d3r-lang") || "zh";
+// Saved choice first, then the browser's language, then English.
+function initialLang() {
+  try {
+    const saved = localStorage.getItem("d3r-lang");
+    if (saved === "en" || saved === "zh") return saved;
+  } catch (e) { /* storage blocked: fall through */ }
+  const nav = (navigator.languages && navigator.languages[0]) || navigator.language || "";
+  return /^zh\b/i.test(nav) ? "zh" : "en";
+}
+let currentLang = initialLang();
 
 function t(key, params) {
   const dict = translations[currentLang] || translations.en;
@@ -1495,9 +1504,6 @@ function t(key, params) {
 }
 
 window.t = t;
-// Chinese-only lookup used for item/stat/class names so they render in Chinese
-// no matter which UI language is active, matching how CLASS_NAMES always shows Chinese.
-window.tZh = (key) => (translations.zh && translations.zh[key]) || key;
 
 function applyTranslations() {
   document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -1523,7 +1529,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (langBtn) {
     langBtn.addEventListener("click", () => {
       currentLang = currentLang === "en" ? "zh" : "en";
-      localStorage.setItem("d3r-lang", currentLang);
+      try { localStorage.setItem("d3r-lang", currentLang); } catch (e) { /* storage blocked */ }
       applyTranslations();
       window.dispatchEvent(new CustomEvent("d3-lang-change", { detail: currentLang }));
     });
