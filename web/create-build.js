@@ -1,9 +1,9 @@
-import { KEY, readBuilds as saved, updateBuilds, importPlan, conflictSnapshot, applyImport } from './build-storage.js?v=012891f6a8';
-import { combo, esc } from './ui.js?v=012891f6a8';
-import { parseBuildToml } from './build-toml.js?v=012891f6a8';
+import { KEY, readBuilds as saved, updateBuilds, importPlan, conflictSnapshot, applyImport } from './build-storage.js?v=fe16fa1959';
+import { combo, esc } from './ui.js?v=fe16fa1959';
+import { parseBuildToml } from './build-toml.js?v=fe16fa1959';
 // randomUUID exists only on HTTPS and localhost pages; a self-hosted plain-HTTP page needs the fallback
 const uid=()=>globalThis.crypto?.randomUUID?.()??'b-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
-import { CLASS_NAMES, STATS, statName, statNameEnglish, HIDDEN, SLOT_NAMES, itemName } from './stats.js?v=012891f6a8';
+import { CLASS_NAMES, STATS, statName, statNameEnglish, HIDDEN, SLOT_NAMES, itemName } from './stats.js?v=fe16fa1959';
 const $=id=>document.getElementById('build-'+id);
 const _t=(key,params)=>typeof window!=='undefined'&&typeof window.t==='function'?window.t(key,params):key;
 const slots=['Head','Shoulders','Chest','Hands','Wrists','Waist','Legs','Feet','Amulet','Ring 1','Ring 2','Main-hand','Off-hand','Dual-Wield'];
@@ -31,7 +31,7 @@ function itemChip(i){
 function render(){for(const i of pickers.keys())disposePicker(i);for(const c of itemCombos)c.dispose();itemCombos=[];generation++;$('clone').hidden=!draft.id;$('name').value=draft.name;$('class').value=String(draft.class);$('exportPreview').hidden=true;$('slots').replaceChildren(...slots.map((slot,i)=>{
   const section=document.createElement('section');section.className='card';
   section.innerHTML=`<h3>${esc(slot)}</h3><label for="build-item-${i}">Item</label><div id="build-chip-${i}" class="chips"></div>`+
-    `<input id="build-item-${i}" type="text" placeholder="Search items: crown, boots, quiver&hellip;" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="build-pick-${i}">`+
+    `<input id="build-item-${i}" type="text" placeholder="${esc(_t('searchItemsPh'))}" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="build-pick-${i}">`+
     `<div id="build-pick-${i}" class="pick" role="listbox" hidden></div><div id="build-affixes-${i}"></div>`;
   return section;
 }));
@@ -57,7 +57,7 @@ const chips=()=>{const list=box.querySelector('.chips');list.replaceChildren(...
   chip.append(label,up,remove);return chip;
 }));list.querySelectorAll('[data-up]').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.up;[row.wants[i-1],row.wants[i]]=[row.wants[i],row.wants[i-1]];chips();}));list.querySelectorAll('[data-remove]').forEach(b=>b.addEventListener('click',()=>{row.wants.splice(+b.dataset.remove,1);chips();}));};chips();const input=box.querySelector('input');pickers.set(request.i,combo(input,box.querySelector('.pick'),()=>{const text=input.value.trim().toLowerCase();return stems.filter(stem=>!row.wants.some(w=>w.stem===stem)&&(statName(stem).toLowerCase().includes(text)||stem.toLowerCase().includes(text))).slice(0,40).map(stem=>({value:stem,html:esc(statName(stem))}));},'No matching stats.',stem=>{row.wants.push({stem,min:null});chips();}));}
 function renderClassOptions(){if(!info)return;const prev=$('class').value;$('class').replaceChildren(...info.classes.map((c,i)=>{const tl=_t(c);const nm=tl!==c?tl:(CLASS_NAMES[c]||c);return new Option(nm,String(i));}).sort((x,y)=>x.text.localeCompare(y.text)));if(prev&&[...$('class').options].some(o=>o.value===prev))$('class').value=prev;}
-window.addEventListener('d3-lang-change',renderClassOptions);
+window.addEventListener('d3-lang-change',()=>{renderClassOptions();document.querySelectorAll('[id^="build-item-"]').forEach(el=>el.setAttribute('placeholder',_t('searchItemsPh')));});
 worker.onmessage=({data:m})=>{if(m.type==='ready'){info=m.info;renderClassOptions();$('editor').hidden=false;$('loading').hidden=true;render();listSaved();}else if(m.type==='stems'){const r=pending.get(m.key);pending.delete(m.key);if(r?.resolve){r.resolve(m.stems);return;}if(r&&r.generation===generation)affixPicker(r,Object.keys(m.stems).filter(s=>!HIDDEN.test(s)).sort((a,b)=>statName(a).localeCompare(statName(b))));}else if(m.type==='error')failRequests(m.message,m.key);};
 $('name').addEventListener('input',()=>draft.name=$('name').value);
 $('class').addEventListener('change',()=>{draft.class=+$('class').value;draft.slots=draft.slots.filter(r=>!r.item||candidates(r.slot).some(it=>it.id===r.item));render();notice('Class changed. Items unavailable to this class were removed.');});

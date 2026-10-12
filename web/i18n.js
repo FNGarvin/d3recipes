@@ -5,6 +5,9 @@ const translations = {
     ctxChange: "change",
     resultsFor: "Results for",
     mysticPlus: "+ Mystic",
+    backToStart: "Back to the start",
+    switchThemeAria: "Switch light or dark theme",
+    navAria: "Prepared builds and custom search",
     matsEach: "{names}: {n} each",
     listSep: ", ",
     sanctifyAvailable: "Sanctification is available in this season.",
@@ -271,6 +274,9 @@ const translations = {
     ctxChange: "更改",
     resultsFor: "以下结果适用于",
     mysticPlus: "+ 秘士",
+    backToStart: "回到开头",
+    switchThemeAria: "切换明/暗模式",
+    navAria: "预设构筑与自定义搜索",
     matsEach: "{names}：各 {n}",
     listSep: "、",
     sanctifyAvailable: "本赛季可用圣化。",
@@ -1537,6 +1543,10 @@ function applyTranslations() {
   document.querySelectorAll("[data-i18n-title]").forEach(el => {
     const key = el.getAttribute("data-i18n-title");
     el.setAttribute("title", t(key));
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach(el => {
+    const key = el.getAttribute("data-i18n-aria-label");
+    el.setAttribute("aria-label", t(key));
   });
   const langBtn = document.getElementById("langToggle");
   if (langBtn) langBtn.textContent = currentLang === "en" ? "中文" : "EN";
