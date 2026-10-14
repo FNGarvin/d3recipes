@@ -9,6 +9,7 @@
  "resultsFor": "Wyniki dla",
  "mysticPlus": "+ Wieszczka",
  "footerZhBy": "Chińska lokalizacja:",
+ "footerAnd": " i ",
  "seasonLabel": "Sezon {s}",
  "footerPeriod": ".",
  "footerLetUsKnow": "Daj nam znać na GitHubie",

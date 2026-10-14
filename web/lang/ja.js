@@ -9,6 +9,7 @@
  "resultsFor": "結果の対象：",
  "mysticPlus": "＋秘術師",
  "footerZhBy": "中国語ローカライズ：",
+ "footerAnd": "、",
  "seasonLabel": "シーズン{s}",
  "footerPeriod": "。",
  "footerLetUsKnow": "GitHubでお知らせください",

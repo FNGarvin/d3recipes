@@ -9,6 +9,7 @@
  "resultsFor": "Результаты для",
  "mysticPlus": "+ Гадалка",
  "footerZhBy": "Китайская локализация:",
+ "footerAnd": " и ",
  "seasonLabel": "Сезон {s}",
  "footerPeriod": ".",
  "footerLetUsKnow": "Сообщите нам на GitHub",

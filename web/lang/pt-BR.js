@@ -9,6 +9,7 @@
  "resultsFor": "Resultados para",
  "mysticPlus": "+ Mística",
  "footerZhBy": "Localização para o chinês por",
+ "footerAnd": " e ",
  "seasonLabel": "Temporada {s}",
  "footerPeriod": ".",
  "footerLetUsKnow": "Conte para nós no GitHub",

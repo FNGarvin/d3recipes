@@ -9,6 +9,7 @@
  "resultsFor": "결과 대상:",
  "mysticPlus": "+ 점술사",
  "footerZhBy": "중국어 현지화:",
+ "footerAnd": " 및 ",
  "seasonLabel": "시즌 {s}",
  "footerPeriod": ".",
  "footerLetUsKnow": "GitHub에서 알려 주세요",

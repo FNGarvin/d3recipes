@@ -9,6 +9,7 @@
  "resultsFor": "以下結果適用於",
  "mysticPlus": "＋靈諭師",
  "footerZhBy": "中文在地化：",
+ "footerAnd": " 和 ",
  "seasonLabel": "第{s}賽季",
  "footerPeriod": "。",
  "footerLetUsKnow": "請到 GitHub 告訴我們",

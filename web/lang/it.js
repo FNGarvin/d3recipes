@@ -9,6 +9,7 @@
  "resultsFor": "Risultati per",
  "mysticPlus": "+ Mistica",
  "footerZhBy": "Localizzazione cinese di",
+ "footerAnd": " e ",
  "seasonLabel": "Stagione {s}",
  "footerPeriod": ".",
  "footerLetUsKnow": "Faccelo sapere su GitHub",

@@ -9,6 +9,7 @@
  "resultsFor": "Ergebnisse für",
  "mysticPlus": "+ Mystikerin",
  "footerZhBy": "Chinesische Lokalisierung von",
+ "footerAnd": " und ",
  "seasonLabel": "Saison {s}",
  "footerPeriod": ".",
  "footerLetUsKnow": "Sag uns auf GitHub Bescheid",

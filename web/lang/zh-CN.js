@@ -9,6 +9,7 @@
  "resultsFor": "以下结果适用于",
  "mysticPlus": "+ 秘士",
  "footerZhBy": "中文本地化：",
+ "footerAnd": " 和 ",
  "seasonLabel": "第 {s} 赛季",
  "footerPeriod": "。",
  "footerLetUsKnow": "欢迎到 GitHub 告诉我们",

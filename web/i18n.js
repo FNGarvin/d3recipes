@@ -6,6 +6,7 @@ const translations = {
     resultsFor: "Results for",
     mysticPlus: "+ Mystic",
     footerZhBy: "Chinese localization by",
+    footerAnd: " and ",
     seasonLabel: "Season {s}",
     footerPeriod: ".",
     footerLetUsKnow: "Let us know on GitHub",
