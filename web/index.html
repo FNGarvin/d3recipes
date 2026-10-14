@@ -81,6 +81,7 @@
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 6px 0 12px; }
   .ctx { color: var(--dim); }
   .ctx b { color: var(--text); font-weight: 600; }
+  select.lang-select { font: inherit; font-size: .9rem; color: var(--accent); background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 3px 6px; cursor: pointer; max-width: 12rem; }
   button.link { background: none; border: 0; padding: 0; margin-left: 4px; font: inherit; font-size: .9rem; color: var(--accent); cursor: pointer; text-decoration: underline; }
   button.icon { background: var(--card); border: 1px solid var(--line); color: var(--text); width: 38px; height: 38px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; flex: none; }
   #ctxEdit { margin: -4px 0 12px; }
@@ -233,7 +234,7 @@
 
   <div class="bar">
     <div class="ctx"><span data-i18n="resultsFor">Results for</span> <b id="ctxText">Season 40 &middot; Softcore</b> <button type="button" class="link" id="ctxBtn" aria-expanded="false" aria-controls="ctxEdit" data-i18n="ctxChange">change</button></div>
-    <button type="button" class="link" id="langToggle">中文</button>
+    <select id="langSelect" class="lang-select" aria-label="Language" title="Language"></select>
     <button type="button" class="icon" id="theme" data-i18n-title="switchThemeTitle" title="Switch light / dark" data-i18n-aria-label="switchThemeAria" aria-label="Switch light or dark theme">&#9790;</button>
   </div>
   <section class="card" id="ctxEdit" hidden>
@@ -352,10 +353,10 @@
 
 </div>
 <script defer src="analytics.js"></script>
-<script type="module" src="builds.js?v=9431d1404d"></script>
-<script type="module" src="app.js?v=9431d1404d"></script>
-<script type="module" src="create-build.js?v=9431d1404d"></script>
-<script type="module" src="search-builds.js?v=9431d1404d"></script>
-<script src="i18n.js?v=9431d1404d"></script>
+<script type="module" src="builds.js?v=72ad7f3e16"></script>
+<script type="module" src="app.js?v=72ad7f3e16"></script>
+<script type="module" src="create-build.js?v=72ad7f3e16"></script>
+<script type="module" src="search-builds.js?v=72ad7f3e16"></script>
+<script src="i18n.js?v=72ad7f3e16"></script>
 </body>
 </html>

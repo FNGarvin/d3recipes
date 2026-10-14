@@ -73,6 +73,7 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 **2026-10-13**
 
 - Chinese item names now come straight from the game's own simplified-Chinese text, thanks to viper-zc (#19): 601 names replaced, 8 follower items added, and Primordial Ashes is 源生灰烬. The Wizard class reads 魔法师 and Haedrig 黑德里格·埃蒙, as in the game.
+- The page is now in all 13 languages of the game, picked from a menu in the header (it also follows your browser's language, and Taiwan and Hong Kong browsers get Traditional Chinese). Item, class, slot and material names, and the skill names in stat lines, are copied from the game's own text for each language; numbers and percentages use each language's format.
 
 **2026-10-12**
 
@@ -165,7 +166,7 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 
 ## Translating
 
-The page's text is in one table, `web/i18n.js`: English and Chinese (中文) so far, the Chinese by nzhijun. Chinese text translated by AI; corrections are welcome as issues or pull requests, ideally with the game's own wording (a screenshot from the console is best), since item, stat and material names should match what the player sees. A test fails when a language lacks a string that English has. The language switch in the header is built for two languages, so adding a third needs a small change there, and builds always use the game's English names in `builds.toml` and in saved builds.
+The page is available in the game's 13 languages: English, Deutsch, Español (España), Español (Latinoamérica), Français, Italiano, 日本語, 한국어, Polski, Português (Brasil), Русский, 简体中文 and 繁體中文. It follows your browser's language, and the menu in the header changes it. English is built into `web/i18n.js`; every other language is one file, `web/lang/<code>.js`, loaded only when it is in use. A file has three parts: `text` (the page's sentences), `stat` (stat names) and `game` (item, class, slot and material names, copied from the game's own text for that language so they match what the player sees on the console). The Chinese was done by nzhijun. Chinese text translated by AI; the sentences in the other languages have not been reviewed by native speakers either. Corrections are welcome as issues or pull requests, ideally with the game's own wording (a screenshot from the console is best): edit `text` or `stat` directly, and report a wrong `game` name as an issue, because those are regenerated from the game. Tests fail when a language lacks a sentence or a stat name that English has, changes a `{placeholder}`, or lacks a name for any item, material or slot title the page can show. To change a language, edit its file and run `node --test web/*.test.mjs`. Builds always use the game's English names in `builds.toml` and in saved builds, whatever language the page shows.
 
 ## License
 

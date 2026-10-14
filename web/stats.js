@@ -93,12 +93,14 @@ export function cutTo11Bits(v) {
   return Math.floor(v / step) * step;
 }
 
+// Numbers in the format of the page language (window.fmtNum from i18n.js); plain English format where there is no page (tests).
+export const numFmt = (n, options) => (typeof window !== "undefined" && window.fmtNum ? window.fmtNum(n, options) : Number(n).toLocaleString("en-US", options));
 export function fmtValue(stem, v) {
   if (stem === "Sockets" || stem === "Indestructible") return "";
   if (Number.isNaN(v)) return "?";
-  if (isPct(stem)) return (Math.round(v * 1000) / 10).toString() + "%";
+  if (isPct(stem)) return numFmt(Math.round(v * 1000) / 1000, { style: "percent", maximumFractionDigits: 1 });
   if (CUT_TO_11_BITS.has(stem)) v = cutTo11Bits(v);
-  return Math.round(v).toLocaleString("en-US");
+  return numFmt(Math.round(v));
 }
 
 export const CLASS_NAMES = { DemonHunter: "Demon Hunter", WitchDoctor: "Witch Doctor" };

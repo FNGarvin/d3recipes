@@ -1,7 +1,7 @@
 // Copyright 2026 FNG. Use, modification and redistribution are permitted under the conditions in LICENSE:
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
 // Recipe rendering shared by the custom search (app.js) and the prepared builds (builds.js).
-import { statName, statAbbr, isSecondary, RANGE_STEMS, fmtValue, materials, MATERIAL_ICONS, MATERIAL_GROUPS, SLOT_NAMES, itemName } from "./stats.js?v=9431d1404d";
+import { numFmt, statName, statAbbr, isSecondary, RANGE_STEMS, fmtValue, materials, MATERIAL_ICONS, MATERIAL_GROUPS, SLOT_NAMES, itemName } from "./stats.js?v=72ad7f3e16";
 
 const slotName = (s) => { const t = typeof window !== "undefined" && window.t ? window.t(s) : s; return t !== s ? t : (SLOT_NAMES[s] || s); };
 
@@ -26,11 +26,11 @@ const iconsPresent = true;
 
 export function matIconHtml(name, qty) {
   const ic = MATERIAL_ICONS[name] || { file: "", abbr: name.slice(0, 2), color: "#666" };
-  const label = `${itemName(name)}: ${qty.toLocaleString("en-US")}`;
+  const label = `${itemName(name)}: ${numFmt(qty)}`;
   return `<span class="mat" title="${label}" aria-label="${label}">` +
     `<span class="fb" style="background:${ic.color}">${ic.abbr}</span>` +
     (ic.file && iconsPresent ? `<img src="icons/${ic.file}" alt="" onload="this.previousElementSibling.remove()" onerror="this.remove()">` : "") +
-    `<span class="n">${qty.toLocaleString("en-US")}</span></span>`;
+    `<span class="n">${numFmt(qty)}</span></span>`;
 }
 
 // One wide icon for a group of materials that all appear with the same count (the three crafting grades, the five legendary
@@ -46,9 +46,9 @@ export function matsHtml(m) {
     const g = MATERIAL_GROUPS.find((x) => x.names.includes(name) && x.names.every((n) => m[n] === qty));
     if (!g) { out.push(matIconHtml(name, qty)); continue; }
     g.names.forEach((n) => grouped.add(n));
-    const label = window.t("matsEach", { names: g.names.map(itemName).join(window.t("listSep")), n: qty.toLocaleString("en-US") });
+    const label = window.t("matsEach", { names: g.names.map(itemName).join(window.t("listSep")), n: numFmt(qty) });
     out.push(`<span class="mat wide" title="${label}" aria-label="${label}"><img src="icons/${g.file}" alt="">` +
-      `<span class="n">${qty.toLocaleString("en-US")}</span></span>`);
+      `<span class="n">${numFmt(qty)}</span></span>`);
   }
   return out.join("");
 }
@@ -117,7 +117,7 @@ export function stepsHtml(h, missing, wantStems, heroes) {
 // Full-tooltip rows. A weapon-damage roll arrives as two lines (minimum, then the spread added on top); show one "min–max" row.
 export function tooltipRows(lines) {
   const rows = [];
-  const num = (v) => Math.round(v).toLocaleString("en-US");
+  const num = (v) => numFmt(Math.round(v));
   for (let i = 0; i < lines.length; i++) {
     const l = lines[i];
     if (l.stem === "item power") continue;
