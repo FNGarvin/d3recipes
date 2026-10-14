@@ -203,3 +203,13 @@ test('English skill names read as the game spells them, and builds exported with
   assert.deepEqual(legacyStatNames('Skill_Barbarian_HotA'),['Hot A damage']);
   assert.deepEqual(legacyStatNames('Dex'),[]);
 });
+test('item names from before the game spelling was adopted still match, so builds saved or exported with them import',async()=>{
+  const {itemKey}=await import('./stats.js');
+  for(const [old,now] of [['Bracer of Destruction','Bracers of Destruction'],['Sherma of Corrosion','Cord of the Sherma'],['Sin Seekers Quivers','Sin Seekers'],
+    ['Wojahnni Assaulter Crossbows','Wojahnni Assaulter'],['Squirts Necklace',"Squirt's Necklace"],['Ambos Pride',"Ambo's Pride"],['Defender Of Westmarch','Defender of Westmarch']])
+    assert.equal(itemKey(old),itemKey(now),old);
+  const data=JSON.parse(await readFile(new URL('./data.json',import.meta.url),'utf8'));
+  const names=new Set(data.items.map(i=>i.name));
+  for(const now of ['Bracers of Destruction','Cord of the Sherma','Sin Seekers','Wojahnni Assaulter',"Squirt's Necklace","Ambo's Pride"])assert.ok(names.has(now),now);
+  for(const old of ['Bracer of Destruction','Sherma of Corrosion','Sin Seekers Quivers','Wojahnni Assaulter Crossbows','Squirts Necklace','Ambos Pride'])assert.ok(!names.has(old),old);
+});

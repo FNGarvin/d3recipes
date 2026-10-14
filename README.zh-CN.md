@@ -18,7 +18,7 @@
   <img src="docs/demo.webp" alt="搜索一件带有暴击几率、暴击伤害和攻击速度的卡里尼之环（法师），然后打开一个配方的完整属性提示" width="720">
 </p>
 
-> 中文文本由 AI 翻译；如有出入，请以[英文原版](README.md)为准。
+> 如有出入，请以[英文原版](README.md)为准。
 
 ---
 
@@ -70,7 +70,7 @@ wasm-pack build --release --target web --out-dir ../web/pkg
 
 **2026-10-12**
 
-- 页面和本 README 现在也有中文版。页面按浏览器语言显示，页眉有语言切换按钮；中文 README 即 [README.zh-CN.md](README.zh-CN.md)。翻译：nzhijun（[@nzhijun](https://github.com/nzhijun)）；物品、词缀和材料名称沿用游戏内的中文名称。中文文本由 AI 翻译。
+- 页面和本 README 现在也有中文版。页面按浏览器语言显示，页眉有语言切换按钮；中文 README 即 [README.zh-CN.md](README.zh-CN.md)。翻译：nzhijun（[@nzhijun](https://github.com/nzhijun)）；物品、词缀和材料名称沿用游戏内的中文名称。
 - 已保存的构筑和导出的 TOML 一律使用游戏的英文名称，与页面显示的语言无关，因此构筑可以在两种语言之间互相导入导出。
 
 <details>
@@ -159,7 +159,7 @@ wasm-pack build --release --target web --out-dir ../web/pkg
 
 ## 翻译
 
-页面提供游戏自带的全部 13 种语言：English、Deutsch、Español（España）、Español（Latinoamérica）、Français、Italiano、日本語、한국어、Polski、Português（Brasil）、Русский、简体中文和繁體中文。页面按浏览器语言显示，页眉的菜单可以更换。英文内置在 `web/i18n.js` 中；其他每种语言各占一个文件 `web/lang/<代码>.js`，只在使用时才加载。每个文件分三部分：`text`（页面上的句子）、`stat`（词缀名称）和 `game`（物品、职业、栏位和材料的名称，直接取自该语言游戏本身的文本，因此与玩家在主机上看到的一致）。中文由 nzhijun 完成。中文文本由 AI 翻译；其他语言的句子同样没有经过母语者审校。欢迎通过 issue 或拉取请求指出错误，最好附上游戏内的原文（主机上的截图最理想）：`text` 和 `stat` 可以直接修改，`game` 里的名称若有错误请提 issue，因为它们会根据游戏文本重新生成。如果某种语言缺少英文已有的句子或词缀名称、改动了 `{占位符}`，或缺少页面可能显示的任何物品、材料或栏位名称，测试会失败。修改某种语言后，请运行 `node --test web/*.test.mjs`。构筑在 `builds.toml` 和已保存的构筑中始终使用游戏的英文名称，无论页面显示哪种语言。
+页面提供游戏自带的全部 13 种语言：English、Deutsch、Español（España）、Español（Latinoamérica）、Français、Italiano、日本語、한국어、Polski、Português（Brasil）、Русский、简体中文和繁體中文。页面按浏览器语言显示，页眉的菜单可以更换。英文内置在 `web/i18n.js` 中；其他每种语言各占一个文件 `web/lang/<代码>.js`，只在使用时才加载。每个文件分三部分：`text`（页面上的句子）、`stat`（词缀名称）和 `game`（物品、职业、栏位和材料的名称，直接取自该语言游戏本身的文本，因此与玩家在主机上看到的一致）。中文由 nzhijun 完成。这些句子没有经过母语者审校。欢迎通过 issue 或拉取请求指出错误，最好附上游戏内的原文（主机上的截图最理想）：`text` 和 `stat` 可以直接修改，`game` 里的名称若有错误请提 issue，因为它们会根据游戏文本重新生成。如果某种语言缺少英文已有的句子或词缀名称、改动了 `{占位符}`，或缺少页面可能显示的任何物品、材料或栏位名称，测试会失败。修改某种语言后，请运行 `node --test web/*.test.mjs`。构筑在 `builds.toml` 和已保存的构筑中始终使用游戏的英文名称，无论页面显示哪种语言。
 
 ## 许可证
 
@@ -171,4 +171,4 @@ wasm-pack build --release --target web --out-dir ../web/pkg
 
 代码、游戏逻辑和英文文档由 FNG（[@FNGarvin](https://github.com/FNGarvin)）以及 [CONTRIBUTORS.md](CONTRIBUTORS.md) 中列出的贡献者完成；中文翻译由 nzhijun 完成。
 
-> 中文文本由 AI 翻译；如有出入，请以[英文原版](README.md)为准。
+> 如有出入，请以[英文原版](README.md)为准。

@@ -1,9 +1,9 @@
-import { KEY, readBuilds as saved, updateBuilds, importPlan, conflictSnapshot, applyImport } from './build-storage.js?v=72ad7f3e16';
-import { combo, esc } from './ui.js?v=72ad7f3e16';
-import { parseBuildToml } from './build-toml.js?v=72ad7f3e16';
+import { KEY, readBuilds as saved, updateBuilds, importPlan, conflictSnapshot, applyImport } from './build-storage.js?v=36019cf3c4';
+import { combo, esc } from './ui.js?v=36019cf3c4';
+import { parseBuildToml } from './build-toml.js?v=36019cf3c4';
 // randomUUID exists only on HTTPS and localhost pages; a self-hosted plain-HTTP page needs the fallback
 const uid=()=>globalThis.crypto?.randomUUID?.()??'b-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,12);
-import { CLASS_NAMES, STATS, statName, statNameEnglish, legacyStatNames, HIDDEN, SLOT_NAMES, itemName } from './stats.js?v=72ad7f3e16';
+import { itemKey, CLASS_NAMES, STATS, statName, statNameEnglish, legacyStatNames, HIDDEN, SLOT_NAMES, itemName } from './stats.js?v=36019cf3c4';
 const $=id=>document.getElementById('build-'+id);
 const _t=(key,params)=>typeof window!=='undefined'&&typeof window.t==='function'?window.t(key,params):key;
 const slots=['Head','Shoulders','Chest','Hands','Wrists','Waist','Legs','Feet','Amulet','Ring 1','Ring 2','Main-hand','Off-hand','Dual-Wield'];
@@ -103,7 +103,7 @@ async function prepareImported(source){
     const slotNames={Cloak:'Chest',Helm:'Head',Gloves:'Hands',Bracers:'Wrists',Belt:'Waist',Pants:'Legs',Boots:'Feet','Main-Hand':'Main-hand','Off-Hand':'Off-hand'};
     const skipped=[];const importedSlots=build.slot.flatMap(r=>{if(r.name==='Potion'){skipped.push(_t('potionSlot'));return [];}if(r.any_item)return [r];const items=(r.items||[]).filter(name=>{if(/\((Cubed|Crafted|[^)]*Bounties[^)]*)\)/i.test(name)){skipped.push(name);return false;}return true;});return items.length?[{...r,items}]:[];});
     const rows=importedSlots.map(r=>{const slot=slotNames[r.name]||r.name;if(!slots.includes(slot))throw Error(_t('unsupportedSlot',{s:r.name}));
-      const item=info.items.find(it=>normalize(it.name)===normalize((r.items?.[0]||'').replace(/\s*\([^)]*\)\s*$/,''))||normalize(it.name)==='ringofthezodiac'&&normalize(r.items?.[0]||'')==='obsidianringofthezodiac');if(!item&&!r.any_item&&!/\((Crafted|[^)]*Bounties[^)]*)\)/i.test(r.items?.[0]||''))throw Error(_t('unknownItem',{s:r.items?.[0]}));return{slot,item:item?.id||null,externalName:item?.name||r.items?.[0],any_item:r.any_item,sets:r.sets,notes:r.notes,source:r,wants:[],alternatives:(r.items||[]).slice(1).map(name=>{const alt=info.items.find(it=>normalize(it.name)===normalize(name)||normalize(it.name)==='ringofthezodiac'&&normalize(name)==='obsidianringofthezodiac');return alt?.name||name;})};});
+      const item=info.items.find(it=>itemKey(it.name)===itemKey((r.items?.[0]||'').replace(/\s*\([^)]*\)\s*$/,''))||normalize(it.name)==='ringofthezodiac'&&normalize(r.items?.[0]||'')==='obsidianringofthezodiac');if(!item&&!r.any_item&&!/\((Crafted|[^)]*Bounties[^)]*)\)/i.test(r.items?.[0]||''))throw Error(_t('unknownItem',{s:r.items?.[0]}));return{slot,item:item?.id||null,externalName:item?.name||r.items?.[0],any_item:r.any_item,sets:r.sets,notes:r.notes,source:r,wants:[],alternatives:(r.items||[]).slice(1).map(name=>{const alt=info.items.find(it=>itemKey(it.name)===itemKey(name)||normalize(it.name)==='ringofthezodiac'&&normalize(name)==='obsidianringofthezodiac');return alt?.name||name;})};});
     if(new Set(rows.map(r=>r.slot)).size!==rows.length)throw Error(_t('slotRepeated'));
     let hero=build.class?info.classes.findIndex(c=>normalize(c)===normalize(build.class)):info.classes.findIndex((_,c)=>rows.filter(r=>r.item).every(r=>info.items.find(it=>it.id===r.item).classes.includes(c)));
     if(hero<0)throw Error(_t('noMatchingClass'));

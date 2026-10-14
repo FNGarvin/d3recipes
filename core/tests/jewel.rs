@@ -28,7 +28,7 @@ fn want(v: &[(&str, f64)]) -> Vec<(String, f64)> {
 #[test]
 fn played_primal_necklace_has_a_socket() {
     let d = data();
-    let item = d.items.iter().position(|i| i.name == "Squirts Necklace").unwrap();
+    let item = d.items.iter().position(|i| i.name == "Squirt's Necklace").unwrap();
     let slot = d.slots.iter().find(|s| s.name == "Amulet").unwrap();
     let root = chain_roots(&slot.pools[1], slot.key, 40, false, 29, true, 1, &d.items).into_iter().find(|r| r.n == 29).unwrap();
     assert_eq!(root.item, item);

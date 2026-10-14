@@ -182,6 +182,11 @@ export const MATERIAL_ICONS = {
   "Angelic Crucible": { file: "angelic-crucible.webp", abbr: "AC", color: "#c9b471" },
 };
 
+// Item names the page used before 2026-10-13 (taken from a community GBID list), as the matching key (lower case, letters and digits only), mapped to the
+// game's name. Builds saved or exported with an old name still import; the five names that only changed an apostrophe or a capital need no entry.
+export const OLD_ITEM_NAMES = { bracerofdestruction: "bracersofdestruction", shermaofcorrosion: "cordofthesherma", sinseekersquivers: "sinseekers", wojahnniassaultercrossbows: "wojahnniassaulter" };
+export const itemKey = (name) => { const k = String(name).toLowerCase().replace(/[^a-z0-9]/g, ""); return OLD_ITEM_NAMES[k] || k; };
+
 export function itemName(name) {
   if (!name) return name;
   if (typeof window !== "undefined") {
