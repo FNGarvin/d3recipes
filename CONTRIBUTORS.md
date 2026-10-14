@@ -27,6 +27,13 @@ The Chinese localization, with a fork that carries it:
 - **The whole page in Chinese:** interface text, item, stat, class and material names, tooltips, and a Chinese README, with a language switch. The wording follows the console game's own terms (Sanctification as 圣化, for example).
 - **A base for other languages.** The strings live in one table, which is where a further translation would start.
 
+## viper-zc ([@viper-zc](https://github.com/viper-zc))
+
+The game's own Chinese names:
+
+- **Item names from the game text.** 601 item names replaced and 8 follower items added, all taken from the Switch game's simplified-Chinese string tables and matched to the English names by id; Primordial Ashes follows the game (源生灰烬) (#19).
+- **A source to build on.** Showed that the Switch game ships its text for 13 languages side by side, which is where the other languages will come from.
+
 ---
 
 Merged work earns a line here, in the same way.

@@ -70,6 +70,10 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 
 ## Changelog
 
+**2026-10-13**
+
+- Chinese item names now come straight from the game's own simplified-Chinese text, thanks to viper-zc (#19): 601 names replaced, 8 follower items added, and Primordial Ashes is 源生灰烬. The Wizard class reads 魔法师 and Haedrig 黑德里格·埃蒙, as in the game.
+
 **2026-10-12**
 
 - The page and this README are now also in Chinese (中文). The page follows your browser's language, with a switch in the header, and the Chinese README is [README.zh-CN.md](README.zh-CN.md). Translation by nzhijun ([@nzhijun](https://github.com/nzhijun)); item, stat and material names follow the game's own Chinese terms. Chinese text translated by AI.
