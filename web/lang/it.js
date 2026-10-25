@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "Clemenza di Akkhan",
  "Akkhan's Manacles": "Polsiere di Akkhan",
  "Ambo's Pride": "Orgoglio di Ambo",
+ "Ancestors' Grace": "Grazia degli Antenati",
  "Ancient Parthan Defenders": "Antichi Difensori di Partha",
  "Andariel's Visage": "Volto di Andariel",
  "Anessazi Edge": "Pungolo di Anessazi",

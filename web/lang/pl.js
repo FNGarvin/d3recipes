@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "Wyrozumiałość Akkhana",
  "Akkhan's Manacles": "Kajdany Akkhana",
  "Ambo's Pride": "Duma Ambo",
+ "Ancestors' Grace": "Łaska Przodków",
  "Ancient Parthan Defenders": "Starożytni Obrońcy Party",
  "Andariel's Visage": "Oblicze Andariel",
  "Anessazi Edge": "Ostrze Anessazi",

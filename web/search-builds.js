@@ -1,7 +1,7 @@
-import {baseQuery,pickHits} from './search-settings.js?v=425597990b';
-import {readSettings,clonePanel,hitHtml,esc,searchStarted,searchEnded} from './ui.js?v=425597990b';
-import {statName,CLASS_NAMES,itemName} from './stats.js?v=425597990b';
-import {supportsSanctify,defaultSanctifyCap} from './recipe.js?v=425597990b';
+import {baseQuery,pickHits} from './search-settings.js?v=cd037254d2';
+import {readSettings,clonePanel,hitHtml,esc,searchStarted,searchEnded} from './ui.js?v=cd037254d2';
+import {statName,CLASS_NAMES,itemName} from './stats.js?v=cd037254d2';
+import {supportsSanctify,defaultSanctifyCap} from './recipe.js?v=cd037254d2';
 const $=id=>document.getElementById('search-builds-'+id);
 const _t=(k,p)=>typeof window!=='undefined'&&typeof window.t==='function'?window.t(k,p):k;
 let info,build,rows=[],active=null,job=0;

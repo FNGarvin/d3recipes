@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "아크칸의 자비",
  "Akkhan's Manacles": "아크칸의 쇠고랑",
  "Ambo's Pride": "암보의 자랑거리",
+ "Ancestors' Grace": "선조의 은총",
  "Ancient Parthan Defenders": "고대 파르산 방어자",
  "Andariel's Visage": "안다리엘의 두개골",
  "Anessazi Edge": "아네사지 서슬",

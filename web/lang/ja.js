@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "アクハンの慈悲",
  "Akkhan's Manacles": "アクハンの手枷",
  "Ambo's Pride": "アンボの矜持",
+ "Ancestors' Grace": "先祖の恩寵",
  "Ancient Parthan Defenders": "古のパーサの守護者",
  "Andariel's Visage": "アンダリエルの面",
  "Anessazi Edge": "アナサジの刃",

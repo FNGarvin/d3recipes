@@ -2,9 +2,9 @@
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
 // Prepared builds: the side/top navigation and the per-build recipe pages. Reads premade_sc.json / premade_hc.json
 // (see export_premade.py); needs no wasm, so it is usable before the search engine has finished loading.
-import { statName, statAbbr, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=425597990b";
-import { stepsHtml, matsHtml, tooltipRows, savedList, requestHash } from "./recipe.js?v=425597990b";
-import { esc } from "./ui.js?v=425597990b";
+import { statName, statAbbr, CLASS_NAMES, SLOT_NAMES, materials, itemName } from "./stats.js?v=cd037254d2";
+import { stepsHtml, matsHtml, tooltipRows, savedList, requestHash } from "./recipe.js?v=cd037254d2";
+import { esc } from "./ui.js?v=cd037254d2";
 
 const $ = (id) => document.getElementById(id);
 const V = new URL(import.meta.url).searchParams.get("v");
@@ -82,8 +82,8 @@ function fullTooltip(tt, need) {
 function recipeBody(row, path, lin, tt, note = "", tooltip = true, who = row.who) {
   const h = hitOf(row, path, lin, who);
   const mats = matsHtml(materials(h));
-  // a recipe that hands the item over names the hero at every step
-  const heroes = who ? { cls: row.by, name: heroName } : undefined;
+  // the first step always names the hero who starts; a recipe that hands the item over names the hero at every step
+  const heroes = { cls: row.by, name: heroName };
   return (row.intro ? `<p class="mk">${row.intro}</p>` : "") + stepsHtml(h, [], new Set(row.need), heroes) + note + `<div class="mats">${mats}</div>` + (tooltip ? fullTooltip(tt, row.need) : "");
 }
 

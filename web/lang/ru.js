@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "Снисходительность Аккана",
  "Akkhan's Manacles": "Кандалы Аккана",
  "Ambo's Pride": "Гордость Амбо",
+ "Ancestors' Grace": "Благодать предков",
  "Ancient Parthan Defenders": "Древние защитники Парты",
  "Andariel's Visage": "Лик Андариэль",
  "Anessazi Edge": "Лезвие Анессази",

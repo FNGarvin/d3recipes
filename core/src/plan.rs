@@ -460,7 +460,7 @@ impl Search {
         let to = (done + CHAIN_CHUNK).min(self.q.maxpos);
         self.chains[ci].upto = to;
         let slot = &d.slots[si];
-        let pool = &slot.pools[cls];
+        let pool = slot.pool(cls, self.q.hardcore);
         let roots = chain_roots(pool, slot.key, self.q.season, self.q.hardcore, to, self.q.eligible, cls, &d.items);
         self.sim.hero = cls;
         for r in roots {
@@ -468,6 +468,9 @@ impl Search {
                 continue;
             }
             let it = &d.items[r.item];
+            if it.hc_only {
+                continue; // Ancestors' Grace: drawn on hardcore, but its power is not modelled, so no route starts on it
+            }
             if !self.root_items.is_empty() && !self.root_items.contains(&it.id) {
                 continue;
             }

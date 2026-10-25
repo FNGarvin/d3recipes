@@ -70,6 +70,11 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 
 ## Changelog
 
+**2026-10-25**
+
+- Hardcore Hope of Cain results are fixed for amulets. A hardcore hero's amulet draws can also land on Ancestors' Grace, the hardcore-only amulet that saves you from a fatal hit, so every hardcore amulet sequence after the first few results was shifted and a hardcore recipe could stop on the wrong amulet. Custom search and the prepared hardcore lists now use the right pool; no route starts on Ancestors' Grace itself. Reported by Nirsy2020 on Discord, and checked in game on a fresh hardcore Monk (all 12 first results, and Ancestors' Grace turning up exactly at the 76th).
+- Every recipe now names the hero who starts: the "Craft & upgrade" step always says "as <class>", also when one hero does the whole recipe (before, it only did when the recipe handed the item over).
+
 **2026-10-13**
 
 - Chinese item names now come straight from the game's own simplified-Chinese text, thanks to viper-zc (#19): 601 names replaced, 8 follower items added, and Primordial Ashes is 源生灰烬. The Wizard class reads 魔法师 and Haedrig 黑德里格·埃蒙, as in the game.

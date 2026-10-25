@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "Leniência de Akkhan",
  "Akkhan's Manacles": "Grilhões de Akkhan",
  "Ambo's Pride": "Orgulho de Ambo",
+ "Ancestors' Grace": "Graça Ancestral",
  "Ancient Parthan Defenders": "Defensores Nefalem Ancestrais",
  "Andariel's Visage": "Visão de Andariel",
  "Anessazi Edge": "Gume dos Anessazi",

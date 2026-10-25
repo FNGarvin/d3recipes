@@ -54,6 +54,9 @@ struct RawItem {
     secondary_pick_count: u32,
     flex_pick_count: u32,
     formulas: Vec<(u32, String)>,
+    /// hardcore-only item (Ancestors' Grace): only in a slot's `hc_pools`
+    #[serde(default)]
+    hc_only: bool,
 }
 
 #[derive(Deserialize)]
@@ -61,6 +64,9 @@ struct RawSlot {
     name: String,
     key: u32,
     pools: HashMap<String, Vec<(usize, u32)>>,
+    /// per class, the hardcore pool when it differs from `pools` (LEDGER V194)
+    #[serde(default)]
+    hc_pools: HashMap<String, Vec<(usize, u32)>>,
     #[serde(default)]
     cross: Vec<usize>,
 }
@@ -131,6 +137,8 @@ pub struct Item {
     pub nb: u32,
     pub nc: u32,
     pub specs: Vec<Spec>,
+    /// hardcore-only item (Ancestors' Grace): drawn by Hope of Cain on hardcore heroes only; its life-saving power is not modelled, so no route starts on it
+    pub hc_only: bool,
 }
 
 pub struct Slot {
@@ -138,8 +146,21 @@ pub struct Slot {
     pub key: u32,
     /// per class: (item index, pool weight) in table order
     pub pools: Vec<Vec<(usize, u32)>>,
+    /// per class: the hardcore Hope of Cain pool when it differs from `pools` (empty = the same); see `Slot::pool`
+    pub hc_pools: Vec<Vec<(usize, u32)>>,
     /// classes for which the pool is another class's items
     pub cross: Vec<usize>,
+}
+
+impl Slot {
+    /// The Hope of Cain pool for a class: the hardcore one on a hardcore hero when this slot has one (LEDGER V194), else the common pool.
+    pub fn pool(&self, class: usize, hardcore: bool) -> &Vec<(usize, u32)> {
+        if hardcore && !self.hc_pools[class].is_empty() {
+            &self.hc_pools[class]
+        } else {
+            &self.pools[class]
+        }
+    }
 }
 
 pub struct Data {
@@ -256,6 +277,7 @@ impl Data {
                 nb: it.secondary_pick_count,
                 nc: it.flex_pick_count,
                 specs: specs(it.formulas),
+                hc_only: it.hc_only,
             });
         }
         let slots = doc
@@ -270,12 +292,20 @@ impl Data {
                         }
                     }
                 }
-                Slot { name: s.name, key: s.key, pools, cross: s.cross }
+                let mut hc_pools = vec![Vec::new(); 7];
+                for (k, v) in s.hc_pools {
+                    if let Ok(c) = k.parse::<usize>() {
+                        if c < 7 {
+                            hc_pools[c] = v;
+                        }
+                    }
+                }
+                Slot { name: s.name, key: s.key, pools, hc_pools, cross: s.cross }
             })
             .collect::<Vec<Slot>>();
         const WORN: [&str; 9] = ["Ring", "Amulet", "Helm", "Chest", "Legs", "Cloak", "SpiritStone_Monk", "VoodooMask", "WizardHat"];
         for s in slots.iter().filter(|s| WORN.contains(&s.name.as_str())) {
-            for pool in s.pools.iter() {
+            for pool in s.pools.iter().chain(s.hc_pools.iter()) {
                 for &(i, _) in pool {
                     items[i].worn = true;
                 }

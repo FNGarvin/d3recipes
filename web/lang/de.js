@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "Akkhans Milde",
  "Akkhan's Manacles": "Akkhans Armschienen",
  "Ambo's Pride": "Ambos Stolz",
+ "Ancestors' Grace": "Gnade der Ahnen",
  "Ancient Parthan Defenders": "Uralte parthanische Schützer",
  "Andariel's Visage": "Andariels Antlitz",
  "Anessazi Edge": "Anessazi-Stilett",

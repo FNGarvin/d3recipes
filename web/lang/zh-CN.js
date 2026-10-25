@@ -568,6 +568,7 @@
  "Akkhan's Leniency": "阿克汉的仁慈",
  "Akkhan's Manacles": "阿克汉的镣铐",
  "Ambo's Pride": "安铂的骄傲",
+ "Ancestors' Grace": "先人之佑",
  "Ancient Parthan Defenders": "古帕萨卫士护腕",
  "Andariel's Visage": "安达莉尔的仪容",
  "Anessazi Edge": "阿内萨兹之锋",

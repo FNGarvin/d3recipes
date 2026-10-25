@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "Misericordia de Akán",
  "Akkhan's Manacles": "Grilletes de Akán",
  "Ambo's Pride": "Soberbia de Ambo",
+ "Ancestors' Grace": "Gracia de los ancestros",
  "Ancient Parthan Defenders": "Defensores partanos ancestrales",
  "Andariel's Visage": "Semblante de Andariel",
  "Anessazi Edge": "Filo Anessazi",

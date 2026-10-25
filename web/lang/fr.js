@@ -488,6 +488,7 @@
  "Akkhan's Leniency": "L’Indulgence d’Akkhan",
  "Akkhan's Manacles": "Les Fers d’Akkhan",
  "Ambo's Pride": "Fierté d’Ambo",
+ "Ancestors' Grace": "Grâce des ancêtres",
  "Ancient Parthan Defenders": "Défenseurs parthois antiques",
  "Andariel's Visage": "Visage d’Andarielle",
  "Anessazi Edge": "Tranchante anessazi",

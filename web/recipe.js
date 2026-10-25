@@ -1,7 +1,7 @@
 // Copyright 2026 FNG. Use, modification and redistribution are permitted under the conditions in LICENSE:
 // credit the source, and visibly link to the site or repository if you use its outputs in a user-facing application.
 // Recipe rendering shared by the custom search (app.js) and the prepared builds (builds.js).
-import { numFmt, statName, statAbbr, isSecondary, RANGE_STEMS, fmtValue, materials, MATERIAL_ICONS, MATERIAL_GROUPS, SLOT_NAMES, itemName } from "./stats.js?v=425597990b";
+import { numFmt, statName, statAbbr, isSecondary, RANGE_STEMS, fmtValue, materials, MATERIAL_ICONS, MATERIAL_GROUPS, SLOT_NAMES, itemName } from "./stats.js?v=cd037254d2";
 
 const slotName = (s) => { const t = typeof window !== "undefined" && window.t ? window.t(s) : s; return t !== s ? t : (SLOT_NAMES[s] || s); };
 
@@ -85,28 +85,32 @@ export function mysticCanFinish(h, missing, wantStems) {
   return spare.length - sec >= need.pri && sec >= need.sec;
 }
 
-// heroes: {cls, name(c)} for a custom search; when the route hands the item to another class, every step says who does it.
+// heroes: {cls, name(c)}; the "Craft & upgrade" step ALWAYS names the hero who starts (a recipe is easy to follow with the wrong class otherwise);
+// when the route hands the item to another class, each step where the hero CHANGES says who does it (the steps in between stay plain).
 export function stepsHtml(h, missing, wantStems, heroes) {
   const out = [];
   const cps = h.checkpoints || [];
   const who = h.route_class || [];
   const crafter = h.craft_class ?? (heroes && heroes.cls);
-  const switched = heroes && (crafter !== heroes.cls || who.some((c) => c !== heroes.cls));
-  const as = (c) => (switched ? ` <b>${window.t('asBy', { c: heroes.name(c) })}</b>` : "");
+  const as = (c) => ` <b>${window.t('asBy', { c: heroes.name(c) })}</b>`;
+  let prev = crafter;
   const stopNote = (cp, prev) => cp ? ` <span class="note">${window.t('stopOnNote', { t: stopOn(cp, prev) })}</span>` : "";
   const hopeNote = (h.hope > 7 || h.route.some(([op]) => op === "C") || h.root_name !== h.name) && cps[0]
     ? stopNote(cps[0], null) : "";
-  out.push(`${window.t('craftAndUpgrade', { n: h.hope, item: slotPlural(h.slot, h.hope) })}${switched ? as(crafter) : ""}${hopeNote}`);
+  const craftBy = heroes && crafter !== undefined ? ` <b>${window.t('asBy', { c: heroes.name(crafter) })}</b>` : "";
+  out.push(`${window.t('craftAndUpgrade', { n: h.hope, item: slotPlural(h.slot, h.hope) })}${craftBy}${hopeNote}`);
   h.route.forEach(([op, n], k) => {
     const last = k === h.route.length - 1;
     const cp = cps[k + 1];
     const note = n > 7 && !last ? stopNote(cp, cps[k]) : "";
-    out.push((OP_TEXT[op] || (() => op))(n) + (switched ? as(who[k]) : "") + note);
+    const changes = heroes && who[k] !== undefined && who[k] !== prev;
+    if (who[k] !== undefined) prev = who[k];
+    out.push((OP_TEXT[op] || (() => op))(n) + (changes ? as(who[k]) : "") + note);
   });
   if (missing.length) {
     const legal = (h.mystic || []).filter((s) => !wantStems.has(s) && !RANGE_STEMS.has(s));
-    const holder = who.length ? who[who.length - 1] : crafter;
-    const by = heroes && h.mystic_class !== undefined && (h.mystic_class !== holder || switched) ? ` <b>${window.t('asBy', { c: heroes.name(h.mystic_class) })}</b>` : "";
+    const holder = prev;
+    const by = heroes && h.mystic_class !== undefined && h.mystic_class !== holder ?` <b>${window.t('asBy', { c: heroes.name(h.mystic_class) })}</b>` : "";
     out.push(legal.length && missing.length === 1
       ? `${window.t('mysticArrow', { legal: legal.map((s) => statName(s)).join(" or "), target: statName(missing[0]) })}${by}`
       : `${window.t('mysticRoll', { s: missing.map((m) => statName(m)).join(" or ") })}${by}`);
