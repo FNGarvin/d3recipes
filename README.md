@@ -70,6 +70,11 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 
 ## Changelog
 
+**2026-10-31**
+
+- Necromancer shoulders are fixed. The game's 2.7.7 data replaced Corpsewhisper Pauldrons with a new version of the same item and placed it ahead of Rathma's Spikes in the item order, so every Necromancer shoulder sequence from the fifth result on was off: on a fresh hardcore Necromancer, results 5 and 6 are Corpsewhisper Pauldrons, not Rathma's Spikes. Custom search and the prepared lists now use the new pool. It is the only slot that changed: all 6,692 item records were compared with the earlier version of the game.
+- Thank you to JS1mmons ([@JS1mmons](https://github.com/JS1mmons)) for the report (#20): extensive bug hunting and documentation resulting in a real bugfix. The recipe links, the video of a fresh hero and every step written down are what made this findable, and every Necromancer shoulder recipe is better for it.
+
 **2026-10-25**
 
 - Hardcore Hope of Cain results are fixed for amulets. A hardcore hero's amulet draws can also land on Ancestors' Grace, the hardcore-only amulet that saves you from a fatal hit, so every hardcore amulet sequence after the first few results was shifted and a hardcore recipe could stop on the wrong amulet. Custom search and the prepared hardcore lists now use the right pool; no route starts on Ancestors' Grace itself. Reported by Nirsy2020 on Discord, and checked in game on a fresh hardcore Monk (all 12 first results, and Ancestors' Grace turning up exactly at the 76th).
@@ -81,10 +86,13 @@ Serve locally: `python -m http.server 8765 -d web` and open `http://localhost:87
 - The page is now in all 13 languages of the game, picked from a menu in the header (it also follows your browser's language, and Taiwan and Hong Kong browsers get Traditional Chinese). Item, class, slot and material names, and the skill names in stat lines, are copied from the game's own text for each language; numbers and percentages use each language's format.
 - Nine item names now read as the game spells them, no longer as a community list did: Bracers of Destruction, Cord of the Sherma (was "Sherma of Corrosion"), Sin Seekers, Wojahnni Assaulter, Squirt's Necklace, Ambo's Pride, Defender of Westmarch, Gesture of Orpheus and Leonine Bow of Hashir. Builds saved or exported with the old names still import.
 
-**2026-10-12**
+<details>
+<summary><b>2026-10-12</b></summary>
 
 - The page and this README are now also in Chinese (中文). The page follows your browser's language, with a switch in the header, and the Chinese README is [README.zh-CN.md](README.zh-CN.md). Translation by nzhijun ([@nzhijun](https://github.com/nzhijun)); item, stat and material names follow the game's own Chinese terms.
 - Saved builds and exported TOML keep the game's English names whatever language the page shows, so a build moves between the two languages.
+
+</details>
 
 <details>
 <summary><b>2026-10-11</b></summary>
